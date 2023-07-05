@@ -1,0 +1,36 @@
+
+### AUTH signin
+POST http://localhost:3000/auth/singin
+content-type: application/json
+
+{
+    "name": "sample"
+}
+
+### AUTH signup
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+    "name": "sample"
+}
+
+
+
+
+### REST all
+GET http://localhost:3000/items
+
+
+### REST add
+POST http://localhost:3000/items
+content-type: application/json
+
+{
+    "name": "sample"
+}
+
+### REST delete
+DELETE http://localhost:3000/items/f51503f7-bc8d-47d4-9be6-82aa2f16977a
+
+

@@ -1,0 +1,27 @@
+{
+  "name": "bdd",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "window": "npx cypress open",
+    "cli": "npx cypress run",
+    "wait": "npx serve"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@badeball/cypress-cucumber-preprocessor": "^18.0.1",
+    "cypress": "^12.16.0",
+    "dotenv": "^16.3.1",
+    "serve": "^14.2.0",
+    "ts-loader": "^9.4.4"
+  },
+  "devDependencies": {
+    "@cypress/webpack-preprocessor": "^5.17.1",
+    "@types/node": "^20.3.2",
+    "dist": "link:@cypress/webpack-preprocessor/dist",
+    "typescript": "^5.1.6"
+  }
+}

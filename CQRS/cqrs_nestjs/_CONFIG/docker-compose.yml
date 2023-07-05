@@ -1,0 +1,118 @@
+version: '3.8'
+
+name: device_cqrs
+
+services:
+
+  query_app:
+    container_name: query_app
+    build:
+      context: ../query_app
+      dockerfile: ../_CONFIG/Dockerfile.query_app
+    ports:
+      - 4000:4000
+    environment:
+      QUERY_DB_URL: ${QUERY_DB_URL}
+      PSQL_DB_HOST: ${PSQL_DB_HOST}
+      PSQL_DB_PORT: ${PSQL_DB_PORT}
+      PSQL_DB_USER: ${PSQL_DB_USER}
+      PSQL_DB_PASS: ${PSQL_DB_PASS}
+      PSQL_DB_NAME: ${PSQL_DB_NAME}
+      KAFKA_URL: ${KAFKA_URL}
+    depends_on:
+      - postgres
+      # - kafka
+    volumes:
+      - ../query_app:/usr/app
+    networks:
+      - bank_api_network
+
+  command_app:
+    container_name: command_app
+    build:
+      context: ../command_app
+      dockerfile: ../_CONFIG/Dockerfile.command_app
+    ports:
+      - 3000:3000
+    environment:
+      KAFKA_URL: ${KAFKA_URL}
+      COMMAND_DB_URL: ${COMMAND_DB_URL}
+      MONGODB_DB_HOST: ${MONGODB_DB_HOST}
+      MONGODB_DB_PORT: ${MONGODB_DB_PORT}
+      MONGODB_DB_NAME: ${MONGODB_DB_NAME}
+    depends_on:
+      # - mongodb
+      - kafka
+    volumes:
+      - ../command_app:/usr/app
+    networks:
+      - bank_api_network
+
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: ${PSQL_DB_USER}
+      POSTGRES_PASSWORD: ${PSQL_DB_PASS}
+      POSTGRES_DB: ${PSQL_DB_NAME}
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      # - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - bank_api_network
+
+  # mongodb:
+  #   container_name: mongodb
+  #   image: mongo:5.0
+  #   ports:
+  #     - 27017:27017
+  #   volumes:
+  #     - mongodb_data:/data/db
+  #   networks:
+  #     - bank_api_network
+
+  zookeeper:
+    container_name: zookeeper
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    ports:
+      - 2181:2181
+    networks:
+      - bank_api_network
+
+  kafka:
+    container_name: kafka
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: yes
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - bank_api_network
+
+networks:
+  bank_api_network:
+volumes:
+  postgres_data:
+    driver: local
+  mongodb_data:
+    driver: local
+  zookeeper_data:
+    driver: local
+  kafka_data:
+    driver: local

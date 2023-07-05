@@ -1,0 +1,82 @@
+version: '3.8'
+
+name: headless_cms
+
+services:
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../_CONFIG/Dockerfile.frontend
+    ports:
+      - 3000:3000
+    environment:
+      CMS_TOKEN: ${CMS_TOKEN}
+      CMS_URL: ${CMS_URL}
+    volumes:
+      - ../frontend:/usr/app
+    networks:
+      - mylocal
+
+  strapi:
+    build:
+      context: ../cms
+      dockerfile: ../_CONFIG/Dockerfile.cms
+    ports:
+      - 1337:1337
+    environment:
+      APP_KEYS: ${APP_KEYS}
+      API_TOKEN_SALT: ${APP_KEYS}
+      ADMIN_JWT_SECRET: ${ADMIN_JWT_SECRET}
+      TRANSFER_TOKEN_SALT: ${TRANSFER_TOKEN_SALT}
+      DATABASE_HOST: db
+      DATABASE_PORT: ${DATABASE_PORT}
+      DATABASE_NAME: ${DATABASE_NAME}
+      DATABASE_USERNAME: ${DATABASE_USERNAME}
+      DATABASE_PASSWORD: ${DATABASE_PASSWORD}
+    # volumes:
+    #   -  ../cms:/usr/app
+    networks:
+      - mylocal
+
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: ${DATABASE_USERNAME}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+      POSTGRES_DB: ${DATABASE_NAME}
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - mylocal
+
+  meilisearch:
+    image: getmeili/meilisearch:latest
+    container_name: meilisearch
+    environment:
+      - http_proxy
+      - https_proxy
+      - MEILI_MASTER_KEY=${MEILI_MASTER_KEY:-masterKey}
+      - MEILI_NO_ANALYTICS=${MEILI_NO_ANALYTICS:-true}
+      - MEILI_ENV=${MEILI_ENV:-development}
+      - MEILI_LOG_LEVEL
+      - MEILI_DB_PATH=${MEILI_DB_PATH:-/data.ms}
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - ./data.ms:/data.ms
+    restart: unless-stopped
+    ports:
+      - 7700:7700
+    networks:
+      - mylocal
+
+networks:
+  mylocal:
+volumes:
+  db:

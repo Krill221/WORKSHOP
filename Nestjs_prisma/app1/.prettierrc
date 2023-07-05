@@ -1,0 +1,6 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWith": 50,
+  "prettier.tabWidth": 2
+}

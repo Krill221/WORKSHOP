@@ -1,0 +1,11 @@
+
+### Create stripe session
+POST http://localhost:3000/stripe/create-session
+content-type: application/json
+
+{
+    "order_items": [
+        { "id": 1, "quantity": 2 },
+        { "id": 2, "quantity": 1 }
+    ]
+}

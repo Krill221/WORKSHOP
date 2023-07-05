@@ -1,0 +1,14 @@
+FROM node:18
+
+WORKDIR /usr/app
+
+COPY package*.json ./
+
+RUN npm install -g --ignore-scripts=false --foreground-scripts --verbose sharp
+RUN npm install -g --platform=linux --arch=x64 sharp
+
+RUN npm ci
+
+COPY . .
+
+CMD ["npm", "run", "develop"]

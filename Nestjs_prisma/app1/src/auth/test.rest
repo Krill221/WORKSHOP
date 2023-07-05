@@ -1,0 +1,22 @@
+
+### AUTH signin
+POST http://localhost:3000/auth/signin
+content-type: application/json
+
+{
+    "name": "vv",
+    "email": "1234@gmao.com",
+    "password": "123456",
+    "ff": 1
+}
+
+### AUTH signup
+POST http://localhost:3000/auth/signup
+content-type: application/json
+
+{
+    "name": "vv",
+    "email": "1234@gmao.com",
+    "password": "123456",
+    "ff": 1
+}

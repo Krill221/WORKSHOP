@@ -1,0 +1,6 @@
+
+### USER me
+GET http://localhost:3000/users/me
+content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjI1LCJlbWFpbCI6IjEyMzRAZ21hby5jb20iLCJpYXQiOjE2ODU4OTYwMTksImV4cCI6MTY4NTg5OTAxOX0.AeC5zyNZaZQZFUzGQgKh1o69H5z0rjrISsk9eeZeamo
+ 

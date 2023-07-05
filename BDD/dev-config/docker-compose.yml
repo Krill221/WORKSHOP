@@ -1,0 +1,42 @@
+version: '3.8'
+
+name: elastic
+
+services:
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../dev-config/Dockerfile.frontend
+    ports:
+      - 3000:3000
+    volumes:
+      -  ../frontend:/usr/app
+      ## use this to cpu compatbility
+      - /usr/app/node_modules/
+    networks:
+      - mylocal
+    stdin_open: true 
+    tty: true
+
+  bdd:
+    build:
+      context: ../bdd
+      dockerfile: ../dev-config/Dockerfile.bdd
+    ports:
+      - 4000:3000
+    environment:
+      TEST_URL: ${TEST_URL}
+    volumes:
+      -  ../bdd:/usr/app
+      ## use this to cpu compatbility
+      - /usr/app/node_modules/
+    networks:
+      - mylocal
+    depends_on:
+      - frontend
+
+networks:
+  mylocal:
+# volumes:
+#   db:

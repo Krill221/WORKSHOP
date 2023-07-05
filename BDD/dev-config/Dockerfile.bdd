@@ -1,0 +1,15 @@
+FROM cypress/base
+
+RUN apt-get install xvfb
+
+WORKDIR /usr/app
+RUN npm install -g pnpm
+
+COPY package*.json ./
+COPY pnpm-lock.yaml ./
+
+RUN pnpm i
+
+COPY . .
+
+CMD ["pnpm", "run", "wait"]
