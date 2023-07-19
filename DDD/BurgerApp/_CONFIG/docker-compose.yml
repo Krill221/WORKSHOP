@@ -1,0 +1,36 @@
+version: '3.8'
+
+name: headless_cms
+
+services:
+
+  backend:
+    build:
+      context: ../backend
+      dockerfile: ../_CONFIG/Dockerfile.backend
+    ports:
+      - 3000:3000
+    environment:
+    volumes:
+      - ../backend:/usr/app
+    networks:
+      - mylocal
+
+  # db:
+  #   image: postgres
+  #   restart: always
+  #   ports:
+  #     - 5432:5432
+  #   environment:
+  #     POSTGRES_USER: ${DATABASE_USERNAME}
+  #     POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+  #     POSTGRES_DB: ${DATABASE_NAME}
+  #   volumes:
+  #     - db:/var/lib/postgresql/data
+  #   networks:
+  #     - mylocal
+
+networks:
+  mylocal:
+volumes:
+  db:

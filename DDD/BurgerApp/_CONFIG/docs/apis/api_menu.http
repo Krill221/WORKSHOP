@@ -1,0 +1,14 @@
+### CREATE MENU REQUEST
+# http://localhost:3000/hosts/{hostID}/menus
+@host=http://localhost:3000
+@hostId=123
+@token=123
+
+POST {{host}}/hosts/{{hostId}}/menus/createMenu HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{token}} 
+
+{
+  "name": "Greek menu",
+  "desc": "Greed menu with salat"
+}

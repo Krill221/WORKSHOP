@@ -1,0 +1,27 @@
+### REGISTER
+
+POST http://localhost:3000/auth/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "name": "krill221",
+  "email": "krill221@gmail.com",
+  "password": "123"
+}
+
+
+### LOGIN
+
+POST http://localhost:3000/auth/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "krill221@gmail.com",
+  "password": "123"
+}
+
+### DINNERS
+
+
+POST http://localhost:3000/dinners HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiY2ZkODIzZTEtMjM2MS00NjBmLTk3ZmUtNjkzYzRkMGU1NDUzIiwibmFtZSI6ImtyaWxsMjIxIiwiaWF0IjoxNjg5MzU3OTUxLCJleHAiOjE2ODkzNTgwNzF9.v8LjM7iglR7f6vJsK_Bl1cKl11-y8Li2_1RECDTPxnA
