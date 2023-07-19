@@ -7,7 +7,7 @@ export class MenuRepository implements IMenuRepository {
   private menu = new Array()
 
   createMenu(menu: any): void {
-    console.log('menu added to repo', menu)
+    console.log('Repo: ', menu)
     this.menu.push(menu)
   }
 }

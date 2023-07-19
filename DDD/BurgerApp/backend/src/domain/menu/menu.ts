@@ -2,6 +2,7 @@ import { randomUUID } from 'crypto';
 import { DinnerId } from '../dinner/valueObjects/DinnerId';
 import { MenuReviewId } from '../menuReview/valueObjects/MenuReviewId';
 import { AggregateRoot } from '@nestjs/cqrs';
+import { MenuCreatedEvent } from './events/menuCreated';
 
 export class Menu extends AggregateRoot {
   public uuid: string;
@@ -14,6 +15,10 @@ export class Menu extends AggregateRoot {
     this.uuid = randomUUID()
     this.name = name
     this.desc = desc
+
+    const event = new MenuCreatedEvent(this)
+    console.log(event)
+    this.apply(event)
   }
 
   addDinner(dinnerId: DinnerId): void {} 
