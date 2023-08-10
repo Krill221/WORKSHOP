@@ -1,6 +1,6 @@
-Feature: Count Page
+Feature: Count Page (FEATURE)
 
-  Testing features of the counter
+  Testing features of the counter (DESC)
 
   Scenario: Navigating to About page
     Given I open the "/" page

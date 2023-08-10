@@ -1,0 +1,24 @@
+version: '3.8'
+
+name: headless_cms
+
+services:
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../_CONFIG/Dockerfile.frontend
+    ports:
+      - 3000:3000
+    environment:
+      CMS_TOKEN: ${CMS_TOKEN}
+      CMS_URL: ${CMS_URL}
+    volumes:
+      - ../frontend:/usr/app
+    networks:
+      - mylocal
+
+networks:
+  mylocal:
+volumes:
+  db:
