@@ -1,0 +1,21 @@
+version: '3.8'
+
+name: angular_app
+
+services:
+
+  frontend:
+    build:
+      context: ../frontend
+      dockerfile: ../_CONFIG/Dockerfile.frontend
+    ports:
+      - 4200:4200
+    environment:
+      TOKEN: ${TOKEN}
+    volumes:
+      - ../frontend:/usr/app
+    networks:
+      - frontend
+
+networks:
+  frontend:

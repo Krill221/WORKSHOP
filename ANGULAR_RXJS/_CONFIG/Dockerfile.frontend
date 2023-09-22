@@ -1,0 +1,15 @@
+FROM node:18
+
+WORKDIR /usr/app
+#RUN npm install -g pnpm
+RUN npm install -g @angular/cli
+
+COPY package*.json ./
+#COPY pnpm-lock.yaml ./
+
+RUN npm i
+
+COPY . .
+
+#CMD ["pnpm", "run", "dev"]
+CMD ["ng", "serve", "--host", "0.0.0.0"]

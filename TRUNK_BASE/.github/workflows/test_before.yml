@@ -1,0 +1,40 @@
+name: Test bun_server (prettier, eslint, bdd)
+
+on:
+  # push:
+  pull_request:
+
+jobs:
+  codeCheck:
+    name: prettier and lint
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup actions
+      uses: actions/checkout@v4
+    - name: Setup bun
+      uses: oven-sh/setup-bun@v1
+    - name: Run prettier
+      run: |-
+        cd bun_server
+        bun i
+        bun run pretty
+        bun run lint
+  bdd:
+    name: BDD
+    needs: codeCheck
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup actions
+        uses: actions/checkout@v4
+      - name: Setup bun
+        uses: oven-sh/setup-bun@v1
+      - name: Run bdd
+        run: |-
+          cd bun_server
+          bun i
+          bun start &
+          cd ../bdd
+          bun i
+          bun cypress install
+          bun cypress run
+
